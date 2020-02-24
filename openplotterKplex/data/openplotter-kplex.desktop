@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Kplex
+Exec=openplotter-kplex
+Icon=kplex
+StartupNotify=true
+Terminal=false
+Type=Application
+Categories=OpenPlotter
