@@ -1,0 +1,4 @@
+include LICENSE
+include README.md
+recursive-include openplotterKplex/data *
+recursive-include openplotterKplex/locale *
