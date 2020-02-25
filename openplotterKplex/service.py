@@ -14,7 +14,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Openplotter. If not, see <http://www.gnu.org/licenses/>.
-import sys, subprocess
+import sys, subprocess, time
 
 if sys.argv[1]=='enable':
 	subprocess.call(['systemctl', 'enable', 'openplotter-kplex'])
@@ -29,4 +29,7 @@ if sys.argv[1]=='stop':
 	subprocess.call(['systemctl', 'stop', 'openplotter-kplex'])
 if sys.argv[1]=='restart':
 	subprocess.call(['systemctl', 'stop', 'openplotter-kplex'])
+	time.sleep(2)
 	subprocess.call(['systemctl', 'start', 'openplotter-kplex'])
+if sys.argv[1]=='status':
+	subprocess.call(['systemctl', 'status', 'openplotter-kplex'])

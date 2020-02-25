@@ -45,10 +45,11 @@ class KplexFrame(wx.Frame):
 		self.currentLanguage = self.conf.get('GENERAL', 'lang')
 		self.language = language.Language(self.currentdir,'openplotter-kplex',self.currentLanguage)
 	
-		if os.path.dirname(os.path.abspath(__file__))[0:4] == '/usr':
-			wx.Frame.__init__(self, None, title=_('Graphical user interface for NMEA 0183 multiplexer kplex')+' '+version, size=(800,444))
-		else:
-			wx.Frame.__init__(self, None, title=_('Graphical user interface for NMEA 0183 multiplexer kplex')+' '+version.version, size=(800,444))
+		self.selected = -1
+
+		if os.path.dirname(os.path.abspath(__file__))[0:4] == '/usr': v = version
+		else: v = version.version
+		wx.Frame.__init__(self, None, title=_('Kplex (NMEA 0183 multiplexer) Graphical user interface')+' '+v, size=(800,444))
 		self.SetFont(wx.Font(10, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
 		icon = wx.Icon(self.currentdir+"/data/kplex.png", wx.BITMAP_TYPE_PNG)
 		self.SetIcon(icon)
@@ -63,18 +64,32 @@ class KplexFrame(wx.Frame):
 		if not self.platform.isInstalled('openplotter-doc'): self.toolbar1.EnableTool(101,False)
 		toolSettings = self.toolbar1.AddTool(102, _('Settings'), wx.Bitmap(self.currentdir+"/data/settings.png"))
 		self.Bind(wx.EVT_TOOL, self.OnToolSettings, toolSettings)
+		#self.toolbar1.AddSeparator()
+		skConnections = self.toolbar1.AddTool(103, _('SK Connection'), wx.Bitmap(self.currentdir+"/data/sk.png"))
+		self.Bind(wx.EVT_TOOL, self.OnSkConnections, skConnections)
+		opSerial = self.toolbar1.AddTool(104, _('OP Serial'), wx.Bitmap(self.currentdir+"/data/usb.png"))
+		self.Bind(wx.EVT_TOOL, self.OnOpSerial, opSerial)
+		#self.toolbar1.AddSeparator()
+		restart = self.toolbar1.AddTool(105, _('restart'), wx.Bitmap(self.currentdir+"/data/kplex.png"))
+		self.Bind(wx.EVT_TOOL, self.OnRestart, restart)
+		advanced = self.toolbar1.AddTool(106, _('manual settings'), wx.Bitmap(self.currentdir+"/data/kplex.png"))
+		self.Bind(wx.EVT_TOOL, self.OnAdvanced, advanced)
 		self.toolbar1.AddSeparator()
-		refresh = self.toolbar1.AddTool(104, _('Refresh'), wx.Bitmap(self.currentdir+"/data/refresh.png"))
-		self.Bind(wx.EVT_TOOL, self.onToolRefresh, refresh)
-
+		apply = self.toolbar1.AddTool(107, _('Apply changes'), wx.Bitmap(self.currentdir+"/data/ok.png"))
+		self.Bind(wx.EVT_TOOL, self.OnApply, apply)
+		
 		self.notebook = wx.Notebook(self)
 		self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.onTabChange)
 		self.p_kplex = wx.Panel(self.notebook)
-		self.notebook.AddPage(self.p_kplex, _('Devices'))
+		self.output = wx.Panel(self.notebook)
+		self.notebook.AddPage(self.p_kplex, _('Devices'))	
+		self.notebook.AddPage(self.output, '')
 		self.il = wx.ImageList(24, 24)
 		img0 = self.il.Add(wx.Bitmap(self.currentdir+"/data/kplex.png", wx.BITMAP_TYPE_PNG))
+		img1 = self.il.Add(wx.Bitmap(self.currentdir+"/data/output.png", wx.BITMAP_TYPE_PNG))
 		self.notebook.AssignImageList(self.il)
 		self.notebook.SetPageImage(0, img0)
+		self.notebook.SetPageImage(1, img1)
 
 		vbox = wx.BoxSizer(wx.VERTICAL)
 		vbox.Add(self.toolbar1, 0, wx.EXPAND)
@@ -82,6 +97,7 @@ class KplexFrame(wx.Frame):
 		self.SetSizer(vbox)
 		
 		self.pageKplex()
+		self.pageOutput()
 		self.read_kplex_conf()
 
 		maxi = self.conf.get('GENERAL', 'maximize')
@@ -118,10 +134,63 @@ class KplexFrame(wx.Frame):
 		subprocess.call(['pkill', '-f', 'openplotter-settings'])
 		subprocess.Popen('openplotter-settings')
 
-	def onToolRefresh(self,e):
-		self.ShowStatusBarBLACK('')
-		self.read_kplex_conf()
+	def OnRestart(self, event=0):
+		self.notebook.ChangeSelection(1)
+		self.logger.Clear()
+		err = False
+		#self.ShowStatusBarRED(_('Closing Kplex'))
+		print(_('Closing Kplex'))
+		self.notebook.Update()
+		command = self.platform.admin+' python3 ' + self.currentdir + '/service.py restart'
+		#subprocess.Popen([self.platform.admin, 'python3', self.currentdir+'/service.py', 'restart'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, shell=True))
+		popen = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, shell=True)
+		time.sleep(5)
+		command = self.platform.admin+' python3 ' + self.currentdir + '/service.py status'
+		popen = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, shell=True)
+		for line in popen.stdout:
+			if 'openplotter kplex' in line:
+				print(line[:-1])
+				err = True
+				self.logger.ShowPosition(self.logger.GetLastPosition())
+			if 'active (running)' in line:
+				print(_('Kplex running'))
+		
+		#subprocess.Popen([self.platform.admin, 'python3', self.currentdir+'/service.py', 'restart'],stdout=sys.stdout, stderr=sys.stderr, universal_newlines=True, shell=True)
+		#subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, shell=True)
+		#popen = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, shell=True)
+		
+		#self.ShowStatusBarGREEN(_('Kplex restarted'))
+		if err:
+			print(_("Error: Can't restart Kplex"))
+		else:
+			print(_('Kplex restarted'))
 
+		self.read_kplex_conf()
+		
+	def OnSkConnections(self,e):
+		if self.platform.skPort:
+			url = self.platform.http+'localhost:'+self.platform.skPort+'/admin/#/serverConfiguration/connections/-'
+			webbrowser.open(url, new=2)	
+		else: 
+			self.ShowStatusBarRED(_('Please install "Signal K Installer" OpenPlotter app'))
+			self.OnToolSettings()
+
+	def OnOpSerial(self, event=0): 
+		if self.conf.get('APPS', 'serial') != '':
+			subprocess.call(['pkill', '-f', 'openplotter-serial'])
+			subprocess.Popen('openplotter-serial')
+		else: 
+			self.ShowStatusBarRED(_('Please install "Serial" OpenPlotter app'))
+			self.OnToolSettings()
+
+	def OnAdvanced(self, event):
+		self.ShowMessage(_(
+			'Add manual settings at the end of the configuration file. Restart to apply changes.'))
+		try:
+			subprocess.Popen(['mousepad', self.home + '/.kplex.conf'])
+		except:
+			self.ShowMessage(_('Editor mousepad not found'))
+		
 	def pageKplex(self):
 		self.list_kplex = CheckListCtrl2(self.p_kplex, 152)
 		self.list_kplex.InsertColumn(0, _('Name'), width=130)
@@ -133,92 +202,34 @@ class KplexFrame(wx.Frame):
 		self.list_kplex.InsertColumn(6, _('Filtering'), width=80)
 		self.list_kplex.InsertColumn(7, _('outFilter'), width=60)
 		self.list_kplex.InsertColumn(8, _('Filtering'), width=80)
-		self.list_kplex.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.edit_kplex)
+		
+		self.list_kplex.Bind(wx.EVT_LIST_ITEM_SELECTED, self.onSelected)
+		self.list_kplex.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.onDeselected)
+		
+		self.list_kplex.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.OnEditButton)
 
-		diagnostic = wx.Button(self.p_kplex, label=_('Diagnostic'))
-		diagnostic.Bind(wx.EVT_BUTTON, self.on_diagnostic_kplex)
+		self.toolbar2 = wx.ToolBar(self.p_kplex, style=wx.TB_TEXT | wx.TB_VERTICAL)
+		self.addButton = self.toolbar2.AddTool(201, _('Add'), wx.Bitmap(self.currentdir+"/data/kplex.png"))
+		self.Bind(wx.EVT_TOOL, self.OnAddButton, self.addButton)
+		self.editButton = self.toolbar2.AddTool(202, _('Edit'), wx.Bitmap(self.currentdir+"/data/edit.png"))
+		self.Bind(wx.EVT_TOOL, self.OnEditButton, self.editButton)
+		self.showButton = self.toolbar2.AddTool(203, _('Diagnostic'), wx.Bitmap(self.currentdir+"/data/show.png"))
+		self.Bind(wx.EVT_TOOL, self.OnShowButton, self.showButton)	
+		self.removeButton = self.toolbar2.AddTool(204, _('Remove'), wx.Bitmap(self.currentdir+"/data/cancel.png"))
+		self.Bind(wx.EVT_TOOL, self.OnRemoveButton, self.removeButton)
 
-		add = wx.Button(self.p_kplex, label=_('add network'))
-		add.Bind(wx.EVT_BUTTON, self.on_add_kplex)
-		delete = wx.Button(self.p_kplex, label=_('delete'))
-		delete.Bind(wx.EVT_BUTTON, self.on_delete_kplex)
+		sizer = wx.BoxSizer(wx.HORIZONTAL)
+		sizer.Add(self.list_kplex, 1, wx.EXPAND, 0)
+		sizer.Add(self.toolbar2, 0)
 
-		restart = wx.Button(self.p_kplex, label=_('Restart'))
-		restart.Bind(wx.EVT_BUTTON, self.on_restart_kplex)
-		advanced = wx.Button(self.p_kplex, label=_('Advanced'))
-		advanced.Bind(wx.EVT_BUTTON, self.on_advanced_kplex)
-		apply_changes = wx.Button(self.p_kplex, label=_('Apply changes'))
-		apply_changes.Bind(wx.EVT_BUTTON, self.on_apply_changes_kplex)
-		cancel_changes = wx.Button(self.p_kplex, label=_('Cancel changes'))
-		cancel_changes.Bind(wx.EVT_BUTTON, self.on_cancel_changes_kplex)
-
-		hlistbox = wx.BoxSizer(wx.HORIZONTAL)
-		hlistbox.Add(self.list_kplex, 1, wx.ALL | wx.EXPAND, 5)
-
-		hbox = wx.BoxSizer(wx.HORIZONTAL)
-		hbox.Add((0, 0), 1, wx.RIGHT | wx.LEFT, 5)
-		hbox.Add(add, 0, wx.RIGHT | wx.LEFT, 5)
-		hbox.Add(delete, 0, wx.RIGHT | wx.LEFT, 5)
-
-		hboxb = wx.BoxSizer(wx.HORIZONTAL)
-		hboxb.Add(diagnostic, 0, wx.RIGHT | wx.LEFT, 5)
-		hboxb.Add(restart, 0, wx.RIGHT | wx.LEFT, 5)
-		hboxb.Add(advanced, 0, wx.RIGHT | wx.LEFT, 5)
-		hboxb.Add((0, 0), 1, wx.RIGHT | wx.LEFT, 5)
-		hboxb.Add(apply_changes, 0, wx.RIGHT | wx.LEFT, 5)
-		hboxb.Add(cancel_changes, 0, wx.RIGHT | wx.LEFT, 5)
-
-		vbox = wx.BoxSizer(wx.VERTICAL)
-		vbox.Add(hlistbox, 1, wx.ALL | wx.EXPAND, 0)
-		vbox.Add(hbox, 0, wx.ALL | wx.EXPAND, 5)
-		vbox.AddSpacer(5)
-		vbox.Add(hboxb, 0, wx.ALL | wx.EXPAND, 5)
-
-		self.p_kplex.SetSizer(vbox)
-
-	def on_advanced_kplex(self, event):
-		self.ShowMessage(_(
-			'GUI kplex will close. Add manual settings at the end of the configuration file. Open GUI kplex again and restart multiplexer to apply changes.'))
-		try:
-			subprocess.Popen(['mousepad', self.home + '/.kplex.conf'])
-		except:
-			self.ShowMessage(_('Editor mousepad not found'))
-			return
-			
-		self.Close()
-
-	def on_restart_kplex(self, event):
-		self.ShowStatusBarRED(_('Closing Kplex'))
-		subprocess.Popen([self.platform.admin, 'python3', self.currentdir+'/service.py', 'restart'])
-		#subprocess.call(['pkill', '-9', 'kplex'])
-		#while self.util_process_exist('kplex'):
-		#	time.sleep(0.05)
-		#time.sleep(0.2)
-		#subprocess.Popen('kplex')
-		#try:
-		#	Serialinst = eval(self.conf.get('UDEV', 'serialinst'))
-		#except:
-		#	Serialinst = {}
-		#for name in Serialinst:
-		#	print(name)
-		#	if Serialinst[name]['assignment'] == 'NMEA 0183 out':
-		#		subprocess.Popen(['kplex', '-f', self.home+'/.nmea0183out.conf'])
-		#		break
-		self.ShowStatusBarGREEN(_('Kplex restarted'))
-		self.read_kplex_conf()
+		self.p_kplex.SetSizer(sizer)
+		self.onDeselected()
 
 	def stop_kplex(self):
 		subprocess.Popen([self.platform.admin, 'python3', self.currentdir+'/service.py', 'stop'])
-		#subprocess.call(['pkill', '-9', 'kplex'])
-		#while self.util_process_exist('kplex'):
-		#	time.sleep(0.05)
 
-	def on_cancel_changes_kplex(self, event):
-		self.read_kplex_conf()
-		self.ShowStatusBarBLACK('')
-
-	def edit_kplex(self, e):
-		idx = e.GetIndex()
+	def OnEditButton(self, e):
+		idx = self.selected
 		filteronly = 0
 		if self.kplex[idx][1] == 'system' or self.kplex[idx][1] == 'signalk' or self.kplex[idx][1] == 'gpsd':
 			self.ShowStatusBarBLACK(_('You can only edit filter.'))
@@ -230,10 +241,10 @@ class KplexFrame(wx.Frame):
 		edit.append(filteronly)
 		self.edit_add_kplex(edit)
 
-	def on_add_kplex(self, e):
-		self.edit_add_kplex(0)
+	def OnAddButton(self, e):
+		self.edit_add_kplex()
 
-	def edit_add_kplex(self, edit):
+	def edit_add_kplex(self, edit=0):
 		dlg = addkplex(edit, self.kplex, self)
 		dlg.ShowModal()
 		result = dlg.result
@@ -357,29 +368,9 @@ class KplexFrame(wx.Frame):
 				self.list_kplex.SetItem(index, 8, filters)
 			if i[10] == '1': self.list_kplex.CheckItem(index)
 
-	def on_apply_changes_kplex(self, event):
+	def OnApply(self, event):
 		state = ''
 		data = '# For advanced manual configuration, please visit: http://www.stripydog.com/kplex/configuration.html\n# Please do not modify OpenPlotter GUI settings.\n# Add manual settings at the end of the document.\n\n'
-
-		#data += '###defaults\n\n'
-		#data += '[udp]\nname=system\ndirection=in\nport=10110\n'
-		#for index, item in enumerate(self.kplex):
-		#	if 'system' in item[1]:
-		#		if not (item[6] == _('none') or item[6] == 'none') and not (item[7] == _('nothing') or item[7] == 'nothing'): 
-		#			data += state + 'ifilter=' + item[7] + '\n'
-		#		if not (item[8] == _('none') or item[8] == 'none') and not (item[9] == _('nothing') or item[9] == 'nothing'): 
-		#			data += state + 'ofilter=' + item[9] + '\n'
-		#		data += '\n'
-		#data += '[tcp]\nname=signalk\ndirection=out\nmode=server\nport=30330\n\n'
-		#for index, item in enumerate(self.kplex):
-		#	if 'signalk' in item[1]:
-		#		if not (item[6] == _('none') or item[6] == 'none') and not (item[7] == _('nothing') or item[7] == 'nothing'): 
-		#			data += state + 'ifilter=' + item[7] + '\n'
-		#		if not (item[8] == _('none') or item[8] == 'none') and not (item[9] == _('nothing') or item[9] == 'nothing'): 
-		#			data += state + 'ofilter=' + item[9] + '\n'
-		#		data += '\n'
-		#
-		#data += '###end of defaults\n\n###OpenPlotter GUI settings\n\n'
 
 		for index, item in enumerate(self.kplex):
 			#if not ('system' in item[1] or 'signalk' in item[1]):
@@ -425,10 +416,10 @@ class KplexFrame(wx.Frame):
 		file = open(self.home + '/.kplex.conf', 'w')
 		file.write(data)
 		file.close()
-		self.on_restart_kplex(0)
+		self.OnRestart()
 		self.read_kplex_conf()
 
-	def on_delete_kplex(self, event):
+	def OnRemoveButton(self, event):
 		selected = self.list_kplex.GetFirstSelected()
 		if selected == -1:
 			self.ShowStatusBarRED(_('Select an item.'))
@@ -436,16 +427,10 @@ class KplexFrame(wx.Frame):
 		num = len(self.kplex)
 		for i in range(num):
 			if self.list_kplex.IsSelected(i):
-				#if self.kplex[i][1] == 'system' or self.kplex[i][1] == 'signalk':
-				#	self.ShowStatusBarRED(_('You can not delete this'))
-				#	return
-				#if self.kplex[i][2] == 'Serial' or self.kplex[i][1] == 'gpsd':
-				#	self.ShowStatusBarRED(_('Unassign this device on "Serial ports" tab'))
-				#	return	
 				del self.kplex[i]
 		self.set_list_kplex()
 
-	def on_diagnostic_kplex(self, event):
+	def OnShowButton(self, event):
 		selected = self.list_kplex.GetFirstSelected()
 		if selected == -1:
 			self.ShowStatusBarRED(_('Select an item.'))
@@ -480,56 +465,39 @@ class KplexFrame(wx.Frame):
 						subprocess.Popen(['python3', self.currentdir + '/diagnostic-NMEA.py', '10112', 'diagnostic_input'])
 					if self.kplex[i][3] == 'out' or self.kplex[i][3] == 'both':
 						subprocess.Popen(['python3', self.currentdir + '/diagnostic-NMEA.py', '10113', 'diagnostic_output'])
-					
-					#try:
-					#	Serialinst = eval(self.conf.get('UDEV', 'serialinst'))
-					#except:
-					#	Serialinst = {}
-					#for name in Serialinst:
-					#	if Serialinst[name]['assignment'] == 'NMEA 0183 out':
-					#		subprocess.Popen(['kplex', '-f', self.home+'/.nmea0183out.conf'])
-					#		break
 
-	def OnRemoveButton(self, e):
-		index = self.list_Kplexinst.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_SELECTED)
-		if index < 0:
-			self.ShowStatusBarYELLOW(_('No device selected'))
-			return
-		name = self.list_Kplexinst.GetItemText(index, 3)
-		try:
-			del self.Kplexinst[name]
-		except: return
-		self.list_Kplexinst.SetItem(index, 3, '')
-		self.list_Kplexinst.SetItem(index, 7, '')
-		self.reset_Kplex_fields()
-		self.conf.set('UDEV', 'Kplexinst', str(self.Kplexinst))
-		self.apply_changes_Kplexinst()	
-			
-	def restart_SK(self, msg):
-		if msg == 0: msg = _('Restarting Signal K server... ')
-		seconds = 12
-		subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'restart'])
-		for i in range(seconds, 0, -1):
-			self.ShowStatusBarYELLOW(msg+str(i))
-			time.sleep(1)
-		self.ShowStatusBarGREEN(_('Signal K server restarted'))
-		self.read_kplex_conf()
+	def onSelected(self, e):
+		i = e.GetIndex()
+		valid = e and i >= 0
+		if not valid: return
+		self.onDeselected()
+		self.selected = i
+		if self.list_kplex.GetItemBackgroundColour(i) != (200,200,200):
+			self.toolbar2.EnableTool(202,True)
+			if self.kplex[i][10] == '1':
+				self.toolbar2.EnableTool(203,True)
 
-	def util_process_exist(self, process_name):
-		pids = [pid for pid in os.listdir('/proc') if pid.isdigit()]
-		exist = False
-		for pid in pids:
-			try:
-				if process_name in str(open(os.path.join('/proc', pid, 'cmdline'), 'rb').read(),'utf-8', 'ignore'):
-					exist = True
-			except IOError:  # proc has already terminated
-				continue
-			if exist:
-				break
-		return exist
+	def onDeselected(self, event=0):
+		self.selected = -1
+		self.toolbar2.EnableTool(202,False)
+		self.toolbar2.EnableTool(203,False)
 	
 	def ShowMessage(self, w_msg):
 		wx.MessageBox(w_msg, 'Info', wx.OK | wx.ICON_INFORMATION)
+		
+	def write(self, string):
+		wx.CallAfter(self.logger.WriteText, string)		
+
+################################################################################
+
+	def pageOutput(self):
+		self.logger = wx.TextCtrl(self.output, wx.ID_ANY, style=wx.TE_MULTILINE|wx.TE_READONLY|wx.HSCROLL)
+		sizer = wx.BoxSizer(wx.VERTICAL)
+		sizer.Add(self.logger, 1, wx.EXPAND, 0)
+		self.output.SetSizer(sizer)
+
+		sys.stdout = self.logger
+		sys.stderr = self.logger
 
 ################################################################################
 
@@ -543,7 +511,7 @@ def main():
 
 	app = wx.App()
 	KplexFrame().Show()
-	time.sleep(1)
+	time.sleep(1.5)
 	app.MainLoop()
 
 if __name__ == '__main__':

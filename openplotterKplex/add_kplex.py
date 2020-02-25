@@ -63,8 +63,8 @@ class addkplex(wx.Dialog):
 		vboxS3.Add(self.kplex_device_select, 0, wx.RIGHT | wx.LEFT | wx.EXPAND, 5)
 			
 		if self.SerDevLs: self.kplex_device_select.SetValue(self.SerDevLs[0])
-		self.bauds = ['4800', '9600', '19200', '38400', '57600', '115200']
-		#self.bauds = ['4800', '9600', '19200', '38400', '57600', '115200', '230400', '460800']
+		#self.bauds = ['4800', '9600', '19200', '38400', '57600', '115200']
+		self.bauds = ['4800', '9600', '19200', '38400', '57600', '115200', '230400', '460800']
 		self.kplex_ser_T2 = wx.StaticText(self.panel, label=_('Bauds'))
 		self.kplex_baud_select = wx.ComboBox(self.panel, choices=self.bauds, style=wx.CB_READONLY)
 
@@ -125,8 +125,7 @@ class addkplex(wx.Dialog):
 		hboxS = wx.BoxSizer(wx.HORIZONTAL)
 		hboxS.Add(hboxS1, 1, wx.RIGHT | wx.LEFT, 3)
 		hboxS.Add(vboxS23, 0, wx.RIGHT | wx.LEFT, 3)
-		
-		
+				
 		hline1 = wx.StaticLine(self.panel)
 	
 		self.name_ifilter_list = []
@@ -150,8 +149,6 @@ class addkplex(wx.Dialog):
 		hboxF.Add(self.ifilter_T2, 0, wx.RIGHT | wx.LEFT, 0)
 		hboxF.Add(self.isent, 0, wx.RIGHT | wx.LEFT, 3)
 	
-		# self.name_ifilter_select = wx.ComboBox(self.panel, choices=self.name_ifilter_list, style=wx.CB_READONLY, size=(110, 32), pos=(305, 125))
-
 		self.ifilter_sentences = wx.TextCtrl(self.panel, -1, style=wx.CB_READONLY)
 		self.ifilter_sentences.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_INACTIVECAPTION))
 
@@ -365,7 +362,7 @@ class addkplex(wx.Dialog):
 		self.ifilter_select.SetValue(self.mode_ifilter[1])
 		self.ifilter_sentences.SetValue('**HDM,**RSA')
 		self.ofilter_select.SetValue(self.mode_ifilter[1])
-		self.ofilter_sentences.SetValue('**RM*,**VHW,**VWR')
+		self.ofilter_sentences.SetValue('**RM*,**VHW,**VWR,**XT*')
 
 	def gpsd_examp(self, e):
 		self.kplex_type.SetValue('TCP')
@@ -417,8 +414,6 @@ class addkplex(wx.Dialog):
 			return
 
 		r_sentence = talker + sent
-		# if self.name_ifilter_select.GetValue()!='':
-		#	r_sentence+='%'+self.name_ifilter_select.GetValue()
 		if r_sentence == '*****':
 			self.ShowMessage(_(
 				'You must enter 2 uppercase characters for talker or 3 uppercase characters for sentence. The symbol * matches any character.'))
@@ -516,7 +511,6 @@ class addkplex(wx.Dialog):
 			self.italker.Enable()
 			self.ifilter_T2.Enable()
 			self.isent.Enable()
-			# self.name_ifilter_select.Enable()
 			self.ifilter_add_b.Enable()
 			self.ifilter_sentences.Enable()
 			self.ifilter_del_b.Enable()
@@ -526,7 +520,6 @@ class addkplex(wx.Dialog):
 			self.italker.Disable()
 			self.ifilter_T2.Disable()
 			self.isent.Disable()
-			# self.name_ifilter_select.Disable()
 			self.ifilter_add_b.Disable()
 			self.ifilter_sentences.Disable()
 			self.ifilter_del_b.Disable()

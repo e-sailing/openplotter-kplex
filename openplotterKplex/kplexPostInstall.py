@@ -28,9 +28,25 @@ def main():
 	print(_('Adding kplex service...'))
 	try:
 		fo = open('/etc/systemd/system/openplotter-kplex.service', "w")
-		fo.write( '[Service]\nExecStart=kplex\nStandardOutput=syslog\nStandardError=syslog\nUser='+conf2.user+'\nRestart=always\nRestartSec=5\n\n[Install]\nWantedBy=multi-user.target')
+		fo.write(
+		'[Unit]\n'+
+		'Description = NMEA 0183 Multiplexer\n'+
+		'Documentation = http://www.stripydog.com/kplex/configuration.html\n'+
+		'After=syslog.target network.target audit.service\n'+
+		'[Service]\n'+
+		'Type=forking\n'+
+		'PIDFILE=/var/run/kplex.pid\n'+
+		'ExecStart=/usr/bin/kplex -p /var/run/kplex.pid -o mode=background\n'+
+		'KillMode=process\n'+
+		'[Install]\n'+
+		'WantedBy=multi-user.target\n'
+		)
+		
+		#fo.write( #'[Service]\nExecStart=kplex\nStandardOutput=syslog\nStandardError=syslog\nUser='+conf2.user+'\nRestart=always\nRestartSec=5\n\n[#Install]\nWantedBy=multi-user.target')
 		fo.close()
 		subprocess.call(['systemctl', 'daemon-reload'])
+		subprocess.call(['systemctl', 'enable', 'openplotter-kplex'])
+
 		print(_('DONE'))
 	except Exception as e: print(_('FAILED: ')+str(e))
 
