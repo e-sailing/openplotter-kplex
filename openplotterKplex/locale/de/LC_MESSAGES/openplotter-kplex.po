@@ -1,354 +1,396 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: openplotter\n"
-"POT-Creation-Date: 2019-12-13 19:47+0100\n"
-"PO-Revision-Date: 2019-12-16 12:54+0100\n"
-"Last-Translator: \n"
-"Language-Team: German\n"
+"Project-Id-Version: openplotter-serial\n"
+"POT-Creation-Date: 2020-02-26 22:49+0100\n"
+"PO-Revision-Date: 2020-02-26 22:50+0100\n"
+"Last-Translator: e-sailing <e.minus.sailing@gmail.com>\n"
+"Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 2.2.4\n"
 "X-Poedit-Basepath: ../../..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Crowdin-Project: openplotter\n"
-"X-Crowdin-Language: de\n"
-"X-Crowdin-File: openplotter-serial.po\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: openplotterSerial.py:52
-msgid "OpenPlotter Serial"
-msgstr "OpenPlotter Seriell"
-
-#: openplotterSerial.py:62
-msgid "Help"
-msgstr "Hilfe"
-
-#: openplotterSerial.py:65
-msgid "Settings"
-msgstr "Einstellungen"
-
-#: openplotterSerial.py:68
-msgid "UART"
-msgstr "UART"
-
-#: openplotterSerial.py:76
-msgid "Refresh"
-msgstr "Aktualisieren"
-
-#: openplotterSerial.py:83
-msgid "Devices"
-msgstr "Geräte"
-
-#: openplotterSerial.py:84
-msgid "Connections"
-msgstr "Verbindungen"
-
-#: openplotterSerial.py:153
-msgid "USB port"
-msgstr "USB-Port"
-
-#: openplotterSerial.py:154 openplotterSerial.py:586
-msgid "device"
-msgstr "Gerät"
-
-#: openplotterSerial.py:155 openplotterSerial.py:165 openplotterSerial.py:587
-msgid "alias"
-msgstr "alias"
-
-#: openplotterSerial.py:156
-msgid "vendor"
-msgstr "Anbieter"
-
-#: openplotterSerial.py:157
-msgid "product"
-msgstr "Produkt"
-
-#: openplotterSerial.py:158
-msgid "serial"
-msgstr "seriell"
-
-#: openplotterSerial.py:159
-msgid "remember"
-msgstr "erinnern"
-
-#: openplotterSerial.py:168 openplotterSerial.py:588
-msgid "data"
-msgstr "Daten"
-
-#: openplotterSerial.py:171
-msgid "Remember device (by vendor, product, serial)"
-msgstr "Gerät merken (nach Hersteller, Produkt, Seriell)"
-
-#: openplotterSerial.py:172
-msgid "Remember port (positon on the USB-hub)"
-msgstr "Port merken (Position und USB-Hub)"
-
-#: openplotterSerial.py:175
-msgid "Apply"
-msgstr "anwenden"
-
-#: openplotterSerial.py:177 openplotterSerial.py:598
-msgid "Remove"
-msgstr "entfernen"
-
-#: openplotterSerial.py:237
-msgid "Device with vendor "
-msgstr "Gerät mit Hersteller "
-
-#: openplotterSerial.py:237
-msgid " is connected to a reserved port"
-msgstr " ist mit einem reservierten Port verbunden"
-
-#: openplotterSerial.py:273
-msgid "no Hub"
-msgstr "kein Hub"
-
-#: openplotterSerial.py:336
-msgid "There are missing devices"
-msgstr "Es gibt fehlende Geräte"
-
-#: openplotterSerial.py:397 openplotterSerial.py:560
-msgid "No device selected"
-msgstr "Kein Gerät ausgewählt"
-
-#: openplotterSerial.py:459
-msgid "This action disables Bluetooth and enables UART interface in GPIO. OpenPlotter will reboot.\n"
-msgstr "Diese Aktion deaktiviert Bluetooth und aktiviert die UART-Schnittstelle am GPIO. OpenPlotter wird neu gestartet.\n"
-
-#: openplotterSerial.py:460 openplotterSerial.py:466
-msgid "Are you sure?"
-msgstr "Bist du sicher?"
-
-#: openplotterSerial.py:461 openplotterSerial.py:467
-msgid "Question"
-msgstr "Frage"
-
-#: openplotterSerial.py:465
-msgid "This action disables UART interface in GPIO and enables Bluetooth. OpenPlotter will reboot.\n"
-msgstr "Diese Aktion deaktiviert die UART-Schnittstelle am GPIO und aktiviert Bluetooth. OpenPlotter startet neu.\n"
-
-#: openplotterSerial.py:480
-msgid "Failed. No port selected"
-msgstr "Fehlgeschlagen. Kein Port ausgewählt"
-
-#: openplotterSerial.py:485
-msgid "The alias must be a lowercase string between 1 and 8 characters or numbers."
-msgstr "Der Alias muss ein aus Kleinbuchstaben oder Zahlen bestehnder String sein mit einer Länge von 1 und 8 Zeichen."
-
-#: openplotterSerial.py:491
-msgid "Same alias used for multiple devices"
-msgstr "Gleicher Alias für mehrere Geräte"
-
-#: openplotterSerial.py:496
-msgid "Please select type of data"
-msgstr "Bitte wählen Sie den Datentyp"
-
-#: openplotterSerial.py:517
-msgid "Device with duplicate vendor and product must be set to \"Remember port\"."
-msgstr "Gerät mit gleichem Hersteller und Produkt muss auf \"Port speichern\" gesetzt werden."
-
-#: openplotterSerial.py:524
-msgid "This port is already reserved and must be set to \"Remember device\"."
-msgstr "Dieser Port ist bereits reserviert und muss auf \"Gerät speichern\" gesetzt werden."
-
-#: openplotterSerial.py:533
-msgid "Applying changes ..."
-msgstr "Änderungen werden übernommen ..."
-
-#: openplotterSerial.py:574
-msgid "Add to Signal K"
-msgstr "Zu Signal K hinzufügen"
-
-#: openplotterSerial.py:576
-msgid "Add to CAN Bus"
-msgstr "Zu CAN-Bus hinzufügen"
-
-#: openplotterSerial.py:578
-msgid "Add to GPSD"
-msgstr "Zu GPSD hinzufügen"
-
-#: openplotterSerial.py:580
-msgid "Add to Pypilot"
-msgstr "Zu Pypilot hinzufügen"
-
-#: openplotterSerial.py:582
-msgid "Add to Kplex"
-msgstr "Zu Kplex hinzufügen"
-
-#: openplotterSerial.py:589
-msgid "connection"
-msgstr "verbindung"
-
-#: openplotterSerial.py:590
-msgid "ID"
-msgstr "ID"
-
-#: openplotterSerial.py:591
-msgid "bauds"
-msgstr "bauds"
-
-#: openplotterSerial.py:596
-msgid "Edit"
-msgstr "Editieren"
-
-#: openplotterSerial.py:662 openplotterSerial.py:686
-msgid "Please install \"Signal K Installer\" OpenPlotter app"
-msgstr "Bitte installieren Sie die OpenPlotter App \"Signal K Installer\""
-
-#: openplotterSerial.py:689
-msgid "Please install \"CAN Bus\" OpenPlotter app"
-msgstr "Bitte installieren Sie \"CAN Bus\" OpenPlotter App"
-
-#: openplotterSerial.py:705
-msgid "GPSD config file modified"
-msgstr "GPSD Konfigurationsdatei geändert"
-
-#: openplotterSerial.py:709
-msgid "Please install \"gpsd\" package"
-msgstr "Bitte installieren Sie das Paket \"gpsd\""
-
-#: openplotterSerial.py:731
-msgid "Please install \"Pypilot\" OpenPlotter app"
-msgstr "Bitte installieren Sie \"Pypilot\" OpenPlotter App"
-
-#: openplotterSerial.py:753
-msgid "Please install \"Kplex\" OpenPlotter app"
-msgstr "Bitte installieren Sie \"Kplex\" OpenPlotter App"
-
-#: openplotterSerial.py:782
-msgid "Failed. Error removing connection in Signal K"
-msgstr "Fehlgeschlagen. Fehler beim Entfernen der Verbindung in Signal K"
-
-#: openplotterSerial.py:794
-msgid "Restarting Signal K server... "
-msgstr "Starte Signal K-Server neu... "
-
-#: openplotterSerial.py:800
-msgid "Signal K server restarted"
-msgstr "Signal K Server neu gestartet"
-
-#: openplotterSerial.py:814
-msgid "Adding connection for device: "
-msgstr "Verbindung für Gerät hinzufügen: "
-
-#: openplotterSerial.py:821
-msgid "Baud Rate: "
-msgstr "Baud Rate: "
-
-#: openplotterSerial.py:828
-msgid "MANUAL"
-msgstr "MANUELL"
-
-#: openplotterSerial.py:830
-msgid "AUTO"
-msgstr "AUTO"
-
-#: openplotterSerial.py:834 openplotterSerial.py:846 openplotterSerial.py:861
-#: openplotterSerial.py:874 openplotterSerial.py:879
-msgid "Data: "
-msgstr "Daten: "
-
-#: openplotterSerial.py:835 openplotterSerial.py:847 openplotterSerial.py:875
-#: openplotterSerial.py:880
-msgid "ID: "
-msgstr "ID: "
-
-#: openplotterSerial.py:836 openplotterSerial.py:848 openplotterSerial.py:862
-#: openplotterSerial.py:876 openplotterSerial.py:881
-msgid "Serial port: "
-msgstr "Serieller Port: "
-
-#: openplotterSerial.py:838
-msgid "Press AUTO to create a connection in Signal K using the settings above."
-msgstr "Drücken Sie AUTO um eine Verbindung in Signal K mit den obigen Einstellungen herzustellen."
-
-#: openplotterSerial.py:841
-msgid "Signal K will send data to OpenCPN, be sure a network TCP localhost:10110 input connection exists in OpenCPN."
-msgstr "Signal K sendet Daten an OpenCPN, stellen Sie sicher, dass eine TCP Eingangsverbindung (localhost:10110) in OpenCPN existiert."
-
-#: openplotterSerial.py:844
-msgid "Press MANUAL if you need to add special settings."
-msgstr "Drücken Sie MANUELL, wenn Sie spezielle Einstellungen hinzufügen möchten."
-
-#: openplotterSerial.py:850
-msgid "Press AUTO to create a \"canboatjs\" connection for a NGT-1 or a CAN-USB device in Signal K using the settings above."
-msgstr "Drücken Sie AUTO um eine \"canboatjs\" Verbindung für ein NGT-1 oder ein CAN-USB Gerät in Signal K unter Verwendung der obigen Einstellungen herstellen möchten."
-
-#: openplotterSerial.py:853
-msgid "Use the \"SK → NMEA 0183\" plugin to send data to OpenCPN, be sure a network TCP localhost:10110 input connection exists in OpenCPN."
-msgstr "Verwenden Sie das \"SK → NMEA 0183\" Plugin, um Daten an OpenCPN zu senden. Stellen Sie sicher, dass eine TCP Eingangsverbindung (localhost:10110) in OpenCPN existiert."
-
-#: openplotterSerial.py:856
-msgid "Use \"SK → NMEA 2000\" plugin to send data from Signal K to your CAN network. Open desired TX PGNs in your device."
-msgstr "Benutzen Sie das Plugin \"SK → NMEA 2000\", um Daten von Signal K an Ihr CAN-Netzwerk zu senden. Öffnen Sie die gewünschten TX-PGNs in Ihrem Gerät."
-
-#: openplotterSerial.py:859
-msgid "Press MANUAL if you need to add special settings or you want to set a CANable device."
-msgstr "Drücken Sie MANUELL, wenn Sie spezielle Einstellungen hinzufügen oder ein CAN-fähiges Gerät einstellen möchten."
-
-#: openplotterSerial.py:866
-msgid "Press AUTO to add this device to the list of devices managed by GPSD."
-msgstr "Drücken Sie AUTO um dieses Gerät zur Liste der Geräte hinzuzufügen, die von GPSD verwaltet werden."
-
-#: openplotterSerial.py:869
-msgid "Be sure you send only GNSS or AIS data to GPSD. Baud Rate will be automatically assigned."
-msgstr "Stellen Sie sicher, dass Sie nur GNSS oder AIS Daten an GPSD senden. Baud Rate wird automatisch zugewiesen."
-
-#: openplotterSerial.py:872
-msgid "Pypilot will get data from GPSD automatically."
-msgstr "Pypilot holt automatisch Daten von GPSD."
-
-#: openplotterSerial.py:877 openplotterSerial.py:882
-msgid "Coming soon."
-msgstr "In Kürze erhältlich."
-
-#: openplotterSerial.py:917
-msgid "Failed. This ID already exists"
-msgstr "Fehlgeschlagen. Diese ID existiert bereits"
-
-#: openplotterSerial.py:918
-msgid "Failed. This device is already in use"
-msgstr "Fehlgeschlagen. Dieses Gerät wird bereits verwendet"
-
-#: openplotterSerial.py:930
-msgid "Failed. Error creating connection in Signal K"
-msgstr "Fehlgeschlagen. Fehler beim Erstellen der Verbindung in Signal K"
-
-#: serialPostInstall.py:29
-msgid "Editing GPSD config file..."
-msgstr "Bearbeite GPSD Konfigurationsdatei..."
-
-#: serialPostInstall.py:36 serialPreUninstall.py:33
+#: add_kplex.py:26
+msgid "Add/Edit NMEA 0183 (KPLEX)"
+msgstr ""
+
+#: add_kplex.py:39
+msgid " settings "
+msgstr ""
+
+#: add_kplex.py:41 diagnostic-NMEA.py:57 openplotterKplex.py:197
+msgid "Type"
+msgstr ""
+
+#: add_kplex.py:50 openplotterKplex.py:196
+msgid "Name"
+msgstr ""
+
+#: add_kplex.py:58 add_kplex.py:91
+msgid "Port"
+msgstr ""
+
+#: add_kplex.py:68
+msgid "Bauds"
+msgstr ""
+
+#: add_kplex.py:76 add_kplex.py:98
+msgid "in/out"
+msgstr ""
+
+#: add_kplex.py:84
+msgid "Address"
+msgstr ""
+
+#: add_kplex.py:136
+msgid "in Filter "
+msgstr ""
+
+#: add_kplex.py:138 add_kplex.py:179 add_kplex.py:296 add_kplex.py:304
+#: add_kplex.py:384 add_kplex.py:527 add_kplex.py:551 add_kplex.py:622
+#: add_kplex.py:626 add_kplex.py:630 add_kplex.py:653 openplotterKplex.py:346
+#: openplotterKplex.py:358 openplotterKplex.py:404 openplotterKplex.py:406
+msgid "none"
+msgstr ""
+
+#: add_kplex.py:138 add_kplex.py:179 add_kplex.py:633 add_kplex.py:656
+msgid "Accept only sentences:"
+msgstr ""
+
+#: add_kplex.py:138 add_kplex.py:179 add_kplex.py:643 add_kplex.py:667
+msgid "Ignore sentences:"
+msgstr ""
+
+#: add_kplex.py:143 add_kplex.py:183
+msgid "-"
+msgstr ""
+
+#: add_kplex.py:160 add_kplex.py:202
+msgid "Add sentence"
+msgstr ""
+
+#: add_kplex.py:163 add_kplex.py:204
+msgid "Delete"
+msgstr ""
+
+#: add_kplex.py:177
+msgid "out Filter "
+msgstr ""
+
+#: add_kplex.py:218 add_kplex.py:222 add_kplex.py:323 add_kplex.py:325
+#: add_kplex.py:337 add_kplex.py:339 add_kplex.py:350 add_kplex.py:352
+#: add_kplex.py:379 add_kplex.py:381 add_kplex.py:400 add_kplex.py:403
+#: add_kplex.py:424 add_kplex.py:450 add_kplex.py:526 add_kplex.py:550
+#: add_kplex.py:622 add_kplex.py:626 add_kplex.py:631 add_kplex.py:633
+#: add_kplex.py:644 add_kplex.py:654 add_kplex.py:657 add_kplex.py:668
+#: openplotterKplex.py:350 openplotterKplex.py:362 openplotterKplex.py:404
+#: openplotterKplex.py:406
+msgid "nothing"
+msgstr ""
+
+#: add_kplex.py:226
+msgid "getSK examp"
+msgstr ""
+
+#: add_kplex.py:229
+msgid "putSK examp"
+msgstr ""
+
+#: add_kplex.py:232
+msgid "AP examp"
+msgstr ""
+
+#: add_kplex.py:235
+msgid "GPS examp"
+msgstr ""
+
+#: add_kplex.py:238
+msgid "gpsd examp"
+msgstr ""
+
+#: add_kplex.py:241
+msgid "OK"
+msgstr ""
+
+#: add_kplex.py:297 add_kplex.py:305 openplotterKplex.py:347
+#: openplotterKplex.py:359
+msgid "accept"
+msgstr ""
+
+#: add_kplex.py:299 add_kplex.py:307 openplotterKplex.py:348
+#: openplotterKplex.py:360
+msgid "ignore"
+msgstr ""
+
+#: add_kplex.py:410 add_kplex.py:434
+msgid ""
+"Talker must have 2 uppercase characters. The symbol * matches any character."
+msgstr ""
+
+#: add_kplex.py:413 add_kplex.py:437
+msgid ""
+"Sentence must have 3 uppercase characters. The symbol * matches any "
+"character."
+msgstr ""
+
+#: add_kplex.py:419 add_kplex.py:445
+msgid ""
+"You must enter 2 uppercase characters for talker or 3 uppercase characters "
+"for sentence. The symbol * matches any character."
+msgstr ""
+
+#: add_kplex.py:422 add_kplex.py:448
+msgid "This sentence already exists."
+msgstr ""
+
+#: add_kplex.py:573
+msgid ""
+"\"Name\" must be a string between 1 and 13 lowercase letters and/or numbers "
+"which is not used as name for another input/output."
+msgstr ""
+
+#: add_kplex.py:578
+msgid "This name is already in use."
+msgstr ""
+
+#: add_kplex.py:582
+msgid "This name is reserved by the system."
+msgstr ""
+
+#: add_kplex.py:589
+msgid "You must select a Port."
+msgstr ""
+
+#: add_kplex.py:594
+msgid "This output is already in use."
+msgstr ""
+
+#: add_kplex.py:603
+msgid "You must enter an Address."
+msgstr ""
+
+#: add_kplex.py:608
+msgid "You must enter a Port."
+msgstr ""
+
+#: add_kplex.py:612
+msgid "Cancelled. Port 10111-10113 are reserved."
+msgstr ""
+
+#: add_kplex.py:619
+msgid "This input is already in use."
+msgstr ""
+
+#: add_kplex.py:623 add_kplex.py:627
+msgid "You must select a Filter type."
+msgstr ""
+
+#: data/openplotter-kplex.desktop:3
+msgid "Kplex"
+msgstr ""
+
+#: data/openplotter-kplex.desktop:5
+msgid "kplex"
+msgstr ""
+
+#: diagnostic-NMEA.py:56
+msgid "Device"
+msgstr ""
+
+#: diagnostic-NMEA.py:58
+msgid "Interval"
+msgstr ""
+
+#: diagnostic-NMEA.py:59
+msgid "Data"
+msgstr ""
+
+#: diagnostic-NMEA.py:61 diagnostic-NMEA.py:182
+msgid "Pause"
+msgstr ""
+
+#: diagnostic-NMEA.py:64
+msgid "Sort"
+msgstr ""
+
+#: diagnostic-NMEA.py:67
+msgid "NMEA info"
+msgstr ""
+
+#: diagnostic-NMEA.py:110
+msgid "connected to:"
+msgstr ""
+
+#: diagnostic-NMEA.py:112
+msgid "Failed to connect with localhost:10113. Error: "
+msgstr ""
+
+#: diagnostic-NMEA.py:112
+msgid ", trying to reconnect..."
+msgstr ""
+
+#: diagnostic-NMEA.py:179
+msgid "Resume"
+msgstr ""
+
+#: kplexPostInstall.py:28
+msgid "Adding kplex service..."
+msgstr ""
+
+#: kplexPostInstall.py:50 kplexPostInstall.py:56 kplexPreUninstall.py:34
+#: kplexPreUninstall.py:40
 msgid "DONE"
-msgstr "Fertig"
+msgstr ""
 
-#: serialPostInstall.py:37 serialPreUninstall.py:34
+#: kplexPostInstall.py:51 kplexPostInstall.py:57 kplexPreUninstall.py:35
+#: kplexPreUninstall.py:41
 msgid "FAILED: "
-msgstr "FEHLGESCHLAGEN: "
+msgstr ""
 
-#: serialPreUninstall.py:28
-msgid "Removing GPSD config file..."
-msgstr "Entferne GPSD Konfigurationsdatei..."
+#: kplexPostInstall.py:53
+msgid "Setting version..."
+msgstr ""
 
-#: startup.py:41
-msgid "Checking serial connections alias..."
-msgstr "Überprüfe den Alias für serielle Verbindungen..."
+#: kplexPreUninstall.py:28
+msgid "Removing openplotter-kplex service..."
+msgstr ""
 
-#: startup.py:45
-msgid "All your serial connections have an assigned alias"
-msgstr "Alle Ihre seriellen Verbindungen haben einen Alias zugewiesen"
+#: kplexPreUninstall.py:37
+msgid "Removing version..."
+msgstr ""
 
-#: startup.py:51
-msgid "There are serial connections with no alias assigned:"
-msgstr "Es gibt serielle Verbindungen, denen kein Alias zugewiesen ist:"
+#: openplotterKplex.py:52
+msgid "Kplex (NMEA 0183 multiplexer) Graphical user interface"
+msgstr ""
 
-#: startup.py:51 startup.py:52
-msgid "connection ID: "
-msgstr "Verbindungs-ID"
+#: openplotterKplex.py:62
+msgid "Help"
+msgstr ""
 
-#: startup.py:51 startup.py:52
-msgid "device: "
-msgstr "Gerät: "
+#: openplotterKplex.py:65
+msgid "Settings"
+msgstr ""
+
+#: openplotterKplex.py:68
+msgid "SK Connection"
+msgstr ""
+
+#: openplotterKplex.py:70
+msgid "OP Serial"
+msgstr ""
+
+#: openplotterKplex.py:73
+msgid "restart"
+msgstr ""
+
+#: openplotterKplex.py:75
+msgid "manual settings"
+msgstr ""
+
+#: openplotterKplex.py:78
+msgid "Apply changes"
+msgstr ""
+
+#: openplotterKplex.py:85
+msgid "Devices"
+msgstr ""
+
+#: openplotterKplex.py:142
+msgid "Closing Kplex"
+msgstr ""
+
+#: openplotterKplex.py:156
+msgid "Kplex running"
+msgstr ""
+
+#: openplotterKplex.py:164
+msgid "Error: Can't restart Kplex"
+msgstr ""
+
+#: openplotterKplex.py:166
+msgid "Kplex restarted"
+msgstr ""
+
+#: openplotterKplex.py:175
+msgid "Please install \"Signal K Installer\" OpenPlotter app"
+msgstr ""
+
+#: openplotterKplex.py:183
+msgid "Please install \"Serial\" OpenPlotter app"
+msgstr ""
+
+#: openplotterKplex.py:188
+msgid ""
+"Add manual settings at the end of the configuration file. Restart to apply "
+"changes."
+msgstr ""
+
+#: openplotterKplex.py:192
+msgid "Editor mousepad not found"
+msgstr ""
+
+#: openplotterKplex.py:198
+msgid "io"
+msgstr ""
+
+#: openplotterKplex.py:199
+msgid "Port/Address"
+msgstr ""
+
+#: openplotterKplex.py:200
+msgid "Bauds/Port"
+msgstr ""
+
+#: openplotterKplex.py:201
+msgid "inFilter"
+msgstr ""
+
+#: openplotterKplex.py:202 openplotterKplex.py:204
+msgid "Filtering"
+msgstr ""
+
+#: openplotterKplex.py:203
+msgid "outFilter"
+msgstr ""
+
+#: openplotterKplex.py:212
+msgid "Add"
+msgstr ""
+
+#: openplotterKplex.py:214
+msgid "Edit"
+msgstr ""
+
+#: openplotterKplex.py:216
+msgid "Diagnostic"
+msgstr ""
+
+#: openplotterKplex.py:218
+msgid "Remove"
+msgstr ""
+
+#: openplotterKplex.py:235
+msgid "You can only edit filter."
+msgstr ""
+
+#: openplotterKplex.py:326
+msgid ""
+"Multiplexer configuration file does not exist. Add inputs and apply changes."
+msgstr ""
+
+#: openplotterKplex.py:425 openplotterKplex.py:436
+msgid "Select an item."
+msgstr ""
+
+#: startup.py:40
+msgid "Start Kplex..."
+msgstr ""
+
+#: startup.py:43
+msgid "Kplex is running"
+msgstr ""
