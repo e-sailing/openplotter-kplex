@@ -21,7 +21,7 @@ from openplotterKplex import version
 setup (
 	name = 'openplotterKplex',
 	version = version.version,
-	description = 'OpenPlotter app to manage serial devices',
+	description = 'OpenPlotter app to manage NMEA 0183 data',
 	license = 'GPLv3',
 	author="e-sailing",
 	author_email='e.minus.sailing@gmail.com',

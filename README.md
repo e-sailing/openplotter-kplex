@@ -1,6 +1,6 @@
 ## openplotter-kplex
 
-OpenPlotter app to manage kplex devices
+OpenPlotter app to manage NMEA 0183 data
 
 ### Installing
 
@@ -12,10 +12,9 @@ Install [openplotter-settings](https://github.com/openplotter/openplotter-settin
 
 Install [openplotter-settings](https://github.com/openplotter/openplotter-settings) for **development**.
 
-Install dependencies:
-Download kplex from http://www.stripydog.com/kplex/download.html
+Install openplotter-kplex dependencies:
 
-`dpkg -i ./kplex_1.x-x_xxx.deb`
+`sudo apt install gpsd gpsd-clients kplex`
 
 Clone the repository:
 
@@ -43,7 +42,7 @@ Run:
 
 `openplotter-kplex`
 
-Make your changes and repeat package, installation and post-installation steps to test. Pull request your changes to github and we will check and add them to the next version of the [Debian package](https://cloudsmith.io/~openplotter/repos/openplotter/packages/).
+Make your changes and repeat package, installation and post-installation steps to test. Pull request your changes to github and we will check and add them to the next version of the [Debian package](https://launchpad.net/~openplotter/+archive/ubuntu/openplotter).
 
 ### Documentation
 
