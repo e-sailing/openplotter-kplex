@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: openplotter-serial\n"
-"POT-Creation-Date: 2020-02-26 22:49+0100\n"
-"PO-Revision-Date: 2020-02-26 22:49+0100\n"
-"Last-Translator: e-sailing <e.minus.sailing@gmail.com>\n"
+"Project-Id-Version: openplotter-kplex\n"
+"POT-Creation-Date: 2020-02-29 18:57+0100\n"
+"PO-Revision-Date: 2020-02-29 18:57+0100\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 1.8.7.1\n"
 "X-Poedit-Basepath: ../../..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -23,11 +23,11 @@ msgstr ""
 msgid " settings "
 msgstr ""
 
-#: add_kplex.py:41 diagnostic-NMEA.py:57 openplotterKplex.py:197
+#: add_kplex.py:41 diagnostic-NMEA.py:57 openplotterKplex.py:128
 msgid "Type"
 msgstr ""
 
-#: add_kplex.py:50 openplotterKplex.py:196
+#: add_kplex.py:50 openplotterKplex.py:127
 msgid "Name"
 msgstr ""
 
@@ -47,155 +47,147 @@ msgstr ""
 msgid "Address"
 msgstr ""
 
-#: add_kplex.py:136
+#: add_kplex.py:137
 msgid "in Filter "
 msgstr ""
 
-#: add_kplex.py:138 add_kplex.py:179 add_kplex.py:296 add_kplex.py:304
-#: add_kplex.py:384 add_kplex.py:527 add_kplex.py:551 add_kplex.py:622
-#: add_kplex.py:626 add_kplex.py:630 add_kplex.py:653 openplotterKplex.py:346
-#: openplotterKplex.py:358 openplotterKplex.py:404 openplotterKplex.py:406
+#: add_kplex.py:139 add_kplex.py:182 add_kplex.py:299 add_kplex.py:307
+#: add_kplex.py:387 add_kplex.py:534 add_kplex.py:558 add_kplex.py:629
+#: add_kplex.py:633 add_kplex.py:637 add_kplex.py:660 openplotterKplex.py:335
+#: openplotterKplex.py:347 openplotterKplex.py:413 openplotterKplex.py:415
 msgid "none"
 msgstr ""
 
-#: add_kplex.py:138 add_kplex.py:179 add_kplex.py:633 add_kplex.py:656
+#: add_kplex.py:139 add_kplex.py:182 add_kplex.py:640 add_kplex.py:663
 msgid "Accept only sentences:"
 msgstr ""
 
-#: add_kplex.py:138 add_kplex.py:179 add_kplex.py:643 add_kplex.py:667
+#: add_kplex.py:139 add_kplex.py:182 add_kplex.py:650 add_kplex.py:674
 msgid "Ignore sentences:"
 msgstr ""
 
-#: add_kplex.py:143 add_kplex.py:183
+#: add_kplex.py:144 add_kplex.py:186
 msgid "-"
 msgstr ""
 
-#: add_kplex.py:160 add_kplex.py:202
+#: add_kplex.py:163 add_kplex.py:205
 msgid "Add sentence"
 msgstr ""
 
-#: add_kplex.py:163 add_kplex.py:204
+#: add_kplex.py:166 add_kplex.py:207
 msgid "Delete"
 msgstr ""
 
-#: add_kplex.py:177
+#: add_kplex.py:180
 msgid "out Filter "
 msgstr ""
 
-#: add_kplex.py:218 add_kplex.py:222 add_kplex.py:323 add_kplex.py:325
-#: add_kplex.py:337 add_kplex.py:339 add_kplex.py:350 add_kplex.py:352
-#: add_kplex.py:379 add_kplex.py:381 add_kplex.py:400 add_kplex.py:403
-#: add_kplex.py:424 add_kplex.py:450 add_kplex.py:526 add_kplex.py:550
-#: add_kplex.py:622 add_kplex.py:626 add_kplex.py:631 add_kplex.py:633
-#: add_kplex.py:644 add_kplex.py:654 add_kplex.py:657 add_kplex.py:668
-#: openplotterKplex.py:350 openplotterKplex.py:362 openplotterKplex.py:404
-#: openplotterKplex.py:406
+#: add_kplex.py:221 add_kplex.py:225 add_kplex.py:326 add_kplex.py:328
+#: add_kplex.py:340 add_kplex.py:342 add_kplex.py:353 add_kplex.py:355
+#: add_kplex.py:382 add_kplex.py:384 add_kplex.py:403 add_kplex.py:406
+#: add_kplex.py:429 add_kplex.py:455 add_kplex.py:533 add_kplex.py:557
+#: add_kplex.py:629 add_kplex.py:633 add_kplex.py:638 add_kplex.py:640
+#: add_kplex.py:651 add_kplex.py:661 add_kplex.py:664 add_kplex.py:675
+#: openplotterKplex.py:339 openplotterKplex.py:351 openplotterKplex.py:413
+#: openplotterKplex.py:415
 msgid "nothing"
 msgstr ""
 
-#: add_kplex.py:226
+#: add_kplex.py:229
 msgid "getSK examp"
 msgstr ""
 
-#: add_kplex.py:229
+#: add_kplex.py:232
 msgid "putSK examp"
 msgstr ""
 
-#: add_kplex.py:232
+#: add_kplex.py:235
 msgid "AP examp"
 msgstr ""
 
-#: add_kplex.py:235
+#: add_kplex.py:238
 msgid "GPS examp"
 msgstr ""
 
-#: add_kplex.py:238
+#: add_kplex.py:241
 msgid "gpsd examp"
 msgstr ""
 
-#: add_kplex.py:241
+#: add_kplex.py:244
 msgid "OK"
 msgstr ""
 
-#: add_kplex.py:297 add_kplex.py:305 openplotterKplex.py:347
-#: openplotterKplex.py:359
+#: add_kplex.py:300 add_kplex.py:308 openplotterKplex.py:336
+#: openplotterKplex.py:348
 msgid "accept"
 msgstr ""
 
-#: add_kplex.py:299 add_kplex.py:307 openplotterKplex.py:348
-#: openplotterKplex.py:360
+#: add_kplex.py:302 add_kplex.py:310 openplotterKplex.py:337
+#: openplotterKplex.py:349
 msgid "ignore"
 msgstr ""
 
-#: add_kplex.py:410 add_kplex.py:434
+#: add_kplex.py:413 add_kplex.py:439
 msgid ""
 "Talker must have 2 uppercase characters. The symbol * matches any character."
 msgstr ""
 
-#: add_kplex.py:413 add_kplex.py:437
+#: add_kplex.py:416 add_kplex.py:442
 msgid ""
 "Sentence must have 3 uppercase characters. The symbol * matches any "
 "character."
 msgstr ""
 
-#: add_kplex.py:419 add_kplex.py:445
+#: add_kplex.py:424 add_kplex.py:450
 msgid ""
 "You must enter 2 uppercase characters for talker or 3 uppercase characters "
 "for sentence. The symbol * matches any character."
 msgstr ""
 
-#: add_kplex.py:422 add_kplex.py:448
+#: add_kplex.py:427 add_kplex.py:453
 msgid "This sentence already exists."
 msgstr ""
 
-#: add_kplex.py:573
+#: add_kplex.py:580
 msgid ""
 "\"Name\" must be a string between 1 and 13 lowercase letters and/or numbers "
 "which is not used as name for another input/output."
 msgstr ""
 
-#: add_kplex.py:578
+#: add_kplex.py:585
 msgid "This name is already in use."
 msgstr ""
 
-#: add_kplex.py:582
+#: add_kplex.py:589
 msgid "This name is reserved by the system."
 msgstr ""
 
-#: add_kplex.py:589
+#: add_kplex.py:596
 msgid "You must select a Port."
 msgstr ""
 
-#: add_kplex.py:594
+#: add_kplex.py:601
 msgid "This output is already in use."
 msgstr ""
 
-#: add_kplex.py:603
+#: add_kplex.py:610
 msgid "You must enter an Address."
 msgstr ""
 
-#: add_kplex.py:608
+#: add_kplex.py:615
 msgid "You must enter a Port."
 msgstr ""
 
-#: add_kplex.py:612
+#: add_kplex.py:619
 msgid "Cancelled. Port 10111-10113 are reserved."
 msgstr ""
 
-#: add_kplex.py:619
+#: add_kplex.py:626
 msgid "This input is already in use."
 msgstr ""
 
-#: add_kplex.py:623 add_kplex.py:627
+#: add_kplex.py:630 add_kplex.py:634
 msgid "You must select a Filter type."
-msgstr ""
-
-#: data/openplotter-kplex.desktop:3
-msgid "Kplex"
-msgstr ""
-
-#: data/openplotter-kplex.desktop:5
-msgid "kplex"
 msgstr ""
 
 #: diagnostic-NMEA.py:56
@@ -242,17 +234,17 @@ msgstr ""
 msgid "Adding kplex service..."
 msgstr ""
 
-#: kplexPostInstall.py:50 kplexPostInstall.py:56 kplexPreUninstall.py:34
+#: kplexPostInstall.py:34 kplexPostInstall.py:40 kplexPreUninstall.py:34
 #: kplexPreUninstall.py:40
 msgid "DONE"
 msgstr ""
 
-#: kplexPostInstall.py:51 kplexPostInstall.py:57 kplexPreUninstall.py:35
+#: kplexPostInstall.py:35 kplexPostInstall.py:41 kplexPreUninstall.py:35
 #: kplexPreUninstall.py:41
 msgid "FAILED: "
 msgstr ""
 
-#: kplexPostInstall.py:53
+#: kplexPostInstall.py:37
 msgid "Setting version..."
 msgstr ""
 
@@ -264,127 +256,115 @@ msgstr ""
 msgid "Removing version..."
 msgstr ""
 
-#: openplotterKplex.py:52
-msgid "Kplex (NMEA 0183 multiplexer) Graphical user interface"
-msgstr ""
-
-#: openplotterKplex.py:62
+#: openplotterKplex.py:61
 msgid "Help"
 msgstr ""
 
-#: openplotterKplex.py:65
+#: openplotterKplex.py:64
 msgid "Settings"
 msgstr ""
 
-#: openplotterKplex.py:68
-msgid "SK Connection"
-msgstr ""
-
-#: openplotterKplex.py:70
-msgid "OP Serial"
+#: openplotterKplex.py:67
+msgid "Refresh"
 msgstr ""
 
 #: openplotterKplex.py:73
-msgid "restart"
-msgstr ""
-
-#: openplotterKplex.py:75
-msgid "manual settings"
-msgstr ""
-
-#: openplotterKplex.py:78
-msgid "Apply changes"
-msgstr ""
-
-#: openplotterKplex.py:85
 msgid "Devices"
 msgstr ""
 
-#: openplotterKplex.py:142
-msgid "Closing Kplex"
-msgstr ""
-
-#: openplotterKplex.py:156
-msgid "Kplex running"
-msgstr ""
-
-#: openplotterKplex.py:164
-msgid "Error: Can't restart Kplex"
-msgstr ""
-
-#: openplotterKplex.py:166
-msgid "Kplex restarted"
-msgstr ""
-
-#: openplotterKplex.py:175
-msgid "Please install \"Signal K Installer\" OpenPlotter app"
-msgstr ""
-
-#: openplotterKplex.py:183
-msgid "Please install \"Serial\" OpenPlotter app"
-msgstr ""
-
-#: openplotterKplex.py:188
-msgid ""
-"Add manual settings at the end of the configuration file. Restart to apply "
-"changes."
-msgstr ""
-
-#: openplotterKplex.py:192
-msgid "Editor mousepad not found"
-msgstr ""
-
-#: openplotterKplex.py:198
+#: openplotterKplex.py:129
 msgid "io"
 msgstr ""
 
-#: openplotterKplex.py:199
+#: openplotterKplex.py:130
 msgid "Port/Address"
 msgstr ""
 
-#: openplotterKplex.py:200
+#: openplotterKplex.py:131
 msgid "Bauds/Port"
 msgstr ""
 
-#: openplotterKplex.py:201
+#: openplotterKplex.py:132
 msgid "inFilter"
 msgstr ""
 
-#: openplotterKplex.py:202 openplotterKplex.py:204
+#: openplotterKplex.py:133 openplotterKplex.py:135
 msgid "Filtering"
 msgstr ""
 
-#: openplotterKplex.py:203
+#: openplotterKplex.py:134
 msgid "outFilter"
 msgstr ""
 
-#: openplotterKplex.py:212
-msgid "Add"
-msgstr ""
-
-#: openplotterKplex.py:214
-msgid "Edit"
-msgstr ""
-
-#: openplotterKplex.py:216
+#: openplotterKplex.py:138
 msgid "Diagnostic"
 msgstr ""
 
-#: openplotterKplex.py:218
-msgid "Remove"
+#: openplotterKplex.py:141
+msgid "add network"
 msgstr ""
 
-#: openplotterKplex.py:235
+#: openplotterKplex.py:143
+msgid "delete"
+msgstr ""
+
+#: openplotterKplex.py:146
+msgid "Restart"
+msgstr ""
+
+#: openplotterKplex.py:148
+msgid "Advanced"
+msgstr ""
+
+#: openplotterKplex.py:150
+msgid "Apply changes"
+msgstr ""
+
+#: openplotterKplex.py:152
+msgid "Cancel changes"
+msgstr ""
+
+#: openplotterKplex.py:181
+msgid ""
+"GUI kplex will close. Add manual settings at the end of the configuration "
+"file. Open GUI kplex again and restart multiplexer to apply changes."
+msgstr ""
+
+#: openplotterKplex.py:185
+msgid "Editor mousepad not found"
+msgstr ""
+
+#: openplotterKplex.py:191
+msgid "Closing Kplex"
+msgstr ""
+
+#: openplotterKplex.py:207
+msgid "Kplex restarted"
+msgstr ""
+
+#: openplotterKplex.py:224
 msgid "You can only edit filter."
 msgstr ""
 
-#: openplotterKplex.py:326
+#: openplotterKplex.py:315
 msgid ""
 "Multiplexer configuration file does not exist. Add inputs and apply changes."
 msgstr ""
 
-#: openplotterKplex.py:425 openplotterKplex.py:436
+#: openplotterKplex.py:434 openplotterKplex.py:451
 msgid "Select an item."
+msgstr ""
+
+#: openplotterKplex.py:496
+msgid "No device selected"
+msgstr ""
+
+#: openplotterKplex.py:509
+msgid "Restarting Signal K server... "
+msgstr ""
+
+#: openplotterKplex.py:515
+msgid "Signal K server restarted"
 msgstr ""
 
 #: startup.py:40

@@ -9,6 +9,6 @@ X-Python3-Version: >= 3.2
 
 Package: openplotter-kplex
 Architecture: all
-Depends: ${misc:Depends}, ${python3:Depends}, openplotter-settings, python3-pyudev, kplex
-Description: OpenPlotter app to manage kplex devices
- OpenPlotter app to manage kplex devices
+Depends: ${misc:Depends}, ${python3:Depends}, gpsd, gpsd-clients, kplex
+Description: OpenPlotter app to manage NMEA 0183 data
+ OpenPlotter app to manage NMEA 0183 data
