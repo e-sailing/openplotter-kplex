@@ -586,7 +586,7 @@ class addkplex(wx.Dialog):
 			if str(self.kplex_device_select.GetValue()) != 'none':
 				port_address = str(self.kplex_device_select.GetValue())
 			else:
-				self.ShowMessage(_('You must select a Port.'))
+				self.ShowMessage(_('You must select a port.'))
 				return
 			bauds_port = str(self.kplex_baud_select.GetValue())
 			for index, sublist in enumerate(self.extkplex):
@@ -600,16 +600,16 @@ class addkplex(wx.Dialog):
 				if self.kplex_address.GetValue():
 					port_address = self.kplex_address.GetValue()
 				else:
-					self.ShowMessage(_('You must enter an Address.'))
+					self.ShowMessage(_('You must enter an address.'))
 					return
 			if self.kplex_netport.GetValue():
 				bauds_port = self.kplex_netport.GetValue()
 			else:
-				self.ShowMessage(_('You must enter a Port.'))
+				self.ShowMessage(_('You must enter a port.'))
 				return
 
 			if bauds_port >= '10111' and bauds_port <= '10113' and type_conn == 'TCP':
-				self.ShowMessage(_('Cancelled. Port 10111-10113 are reserved.'))
+				self.ShowMessage(_('Cancelled. Ports 10111-10113 are reserved.'))
 				return
 
 			new_address_port = str(type_conn) + str(port_address) + str(bauds_port)

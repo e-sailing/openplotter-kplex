@@ -44,6 +44,7 @@ class KplexFrame(wx.Frame):
 		self.currentdir = os.path.dirname(os.path.abspath(__file__))
 		self.currentLanguage = self.conf.get('GENERAL', 'lang')
 		self.language = language.Language(self.currentdir,'openplotter-kplex',self.currentLanguage)
+		self.diagnostic = False
 	
 		self.selected = -1
 
@@ -141,8 +142,12 @@ class KplexFrame(wx.Frame):
 		#self.ShowStatusBarRED(_('Closing Kplex'))
 		print(_('Closing Kplex'))
 		self.notebook.Update()
+		if self.diagnostic:
+			subprocess.call(['pkill', '-f', 'diagnostic-NMEA.py'])
+			subprocess.call(['pkill', '-f', 'kplex'])
+			time.sleep(1)
+			self.diagnostic = False
 		command = self.platform.admin+' python3 ' + self.currentdir + '/service.py restart'
-		#subprocess.Popen([self.platform.admin, 'python3', self.currentdir+'/service.py', 'restart'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, shell=True))
 		popen = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, shell=True)
 		time.sleep(5)
 		command = self.platform.admin+' python3 ' + self.currentdir + '/service.py status'
@@ -155,11 +160,6 @@ class KplexFrame(wx.Frame):
 			if 'active (running)' in line:
 				print(_('Kplex running'))
 		
-		#subprocess.Popen([self.platform.admin, 'python3', self.currentdir+'/service.py', 'restart'],stdout=sys.stdout, stderr=sys.stderr, universal_newlines=True, shell=True)
-		#subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, shell=True)
-		#popen = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, shell=True)
-		
-		#self.ShowStatusBarGREEN(_('Kplex restarted'))
 		if err:
 			print(_("Error: Can't restart Kplex"))
 		else:
@@ -416,6 +416,7 @@ class KplexFrame(wx.Frame):
 		file = open(self.home + '/.kplex.conf', 'w')
 		file.write(data)
 		file.close()
+		time.sleep(1)
 		self.OnRestart()
 		self.read_kplex_conf()
 
@@ -457,6 +458,8 @@ class KplexFrame(wx.Frame):
 					file.close()
 
 					self.stop_kplex()
+					self.diagnostic = True
+
 					time.sleep(0.2)
 					subprocess.Popen(['kplex', '-f', self.home + '/.debugkplex.conf'])
 					time.sleep(0.5)

@@ -36,7 +36,7 @@ def main():
 		'[Service]\n'+
 		'Type=forking\n'+
 		'PIDFILE=/var/run/kplex.pid\n'+
-		'ExecStart=/usr/bin/kplex -p /var/run/kplex.pid -o mode=background\n'+
+		'ExecStart=/usr/bin/kplex -f ' + conf2.home + '/.kplex.conf -p /var/run/kplex.pid -o mode=background\n'+
 		'KillMode=process\n'+
 		'[Install]\n'+
 		'WantedBy=multi-user.target\n'
