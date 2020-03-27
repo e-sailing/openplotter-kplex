@@ -35,6 +35,11 @@ class CheckListCtrl2(wx.ListCtrl, CheckListCtrlMixin, ListCtrlAutoWidthMixin):
 		CheckListCtrlMixin.__init__(self)
 		ListCtrlAutoWidthMixin.__init__(self)
 
+class CheckListCtrl(wx.ListCtrl, CheckListCtrlMixin, ListCtrlAutoWidthMixin):
+	def __init__(self, parent, height):
+		wx.ListCtrl.__init__(self, parent, -1, style=wx.LC_REPORT | wx.SUNKEN_BORDER, size=(650, height))
+		CheckListCtrlMixin.__init__(self)
+		ListCtrlAutoWidthMixin.__init__(self)
 
 class KplexFrame(wx.Frame):
 	def __init__(self):
@@ -82,22 +87,26 @@ class KplexFrame(wx.Frame):
 		self.notebook = wx.Notebook(self)
 		self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.onTabChange)
 		self.p_kplex = wx.Panel(self.notebook)
+		self.systemd = wx.Panel(self.notebook)
 		self.output = wx.Panel(self.notebook)
 		self.notebook.AddPage(self.p_kplex, _('Devices'))	
+		self.notebook.AddPage(self.systemd, _('Process status'))	
 		self.notebook.AddPage(self.output, '')
 		self.il = wx.ImageList(24, 24)
 		img0 = self.il.Add(wx.Bitmap(self.currentdir+"/data/kplex.png", wx.BITMAP_TYPE_PNG))
 		img1 = self.il.Add(wx.Bitmap(self.currentdir+"/data/output.png", wx.BITMAP_TYPE_PNG))
 		self.notebook.AssignImageList(self.il)
 		self.notebook.SetPageImage(0, img0)
-		self.notebook.SetPageImage(1, img1)
-
+		self.notebook.SetPageImage(1, img0)
+		self.notebook.SetPageImage(2, img1)
+		
 		vbox = wx.BoxSizer(wx.VERTICAL)
 		vbox.Add(self.toolbar1, 0, wx.EXPAND)
 		vbox.Add(self.notebook, 1, wx.EXPAND)
 		self.SetSizer(vbox)
 		
 		self.pageKplex()
+		self.pageSystemd()
 		self.pageOutput()
 		self.read_kplex_conf()
 
@@ -126,6 +135,16 @@ class KplexFrame(wx.Frame):
 		try:
 			self.SetStatusText('')
 		except: pass
+		
+		tab = self.notebook.GetSelection()
+		if tab == 0:
+			self.toolbar1.EnableTool(105,True)
+			self.toolbar1.EnableTool(106,True)
+			self.toolbar1.EnableTool(107,True)
+		else:
+			self.toolbar1.EnableTool(105,False)
+			self.toolbar1.EnableTool(106,False)
+			self.toolbar1.EnableTool(107,False)
 
 	def OnToolHelp(self, event): 
 		url = "/usr/share/openplotter-doc/kplex/kplex_app.html"
@@ -136,7 +155,7 @@ class KplexFrame(wx.Frame):
 		subprocess.Popen('openplotter-settings')
 
 	def OnRestart(self, event=0):
-		self.notebook.ChangeSelection(1)
+		self.notebook.ChangeSelection(2)
 		self.logger.Clear()
 		err = False
 		#self.ShowStatusBarRED(_('Closing Kplex'))
@@ -490,6 +509,81 @@ class KplexFrame(wx.Frame):
 		
 	def write(self, string):
 		wx.CallAfter(self.logger.WriteText, string)		
+
+################################################################################
+
+	def pageSystemd(self):
+		self.started = False
+		self.process = ['openplotter-kplex']
+		self.aStatusList = [_('inactive'),_('active')]
+		self.bStatusList = [_('dead'),_('running')] 
+
+		self.listSystemd = CheckListCtrl(self.systemd, 152)
+		self.listSystemd.InsertColumn(0, _('Autostart'), width=90)
+		self.listSystemd.InsertColumn(1, _('Process'), width=150)
+		self.listSystemd.InsertColumn(2, _('Status'), width=150)
+		self.listSystemd.InsertColumn(3, '  ', width=150)
+		
+		self.listSystemd.OnCheckItem = self.OnCheckItem
+
+		self.toolbar3 = wx.ToolBar(self.systemd, style=wx.TB_TEXT | wx.TB_VERTICAL)
+		self.start = self.toolbar3.AddTool(301, _('Start'), wx.Bitmap(self.currentdir+"/data/start.png"))
+		self.Bind(wx.EVT_TOOL, self.onStart, self.start)
+		self.stop = self.toolbar3.AddTool(302, _('Stop'), wx.Bitmap(self.currentdir+"/data/stop.png"))
+		self.Bind(wx.EVT_TOOL, self.onStop, self.stop)
+		self.restart = self.toolbar3.AddTool(303, _('Restart'), wx.Bitmap(self.currentdir+"/data/restart.png"))
+		self.Bind(wx.EVT_TOOL, self.onRestart, self.restart)	
+
+		sizer = wx.BoxSizer(wx.HORIZONTAL)
+		sizer.Add(self.listSystemd, 1, wx.EXPAND, 0)
+		sizer.Add(self.toolbar3, 0)
+
+		self.systemd.SetSizer(sizer)
+
+		self.set_listSystemd()
+		self.started = True
+
+	def set_listSystemd(self):
+		self.listSystemd.DeleteAllItems()
+		index = 1
+		for i in self.process:
+			if i:
+				index = self.listSystemd.InsertItem(sys.maxsize, '')
+				self.statusUpdate(i,index)
+
+	def statusUpdate(self, process, index): 
+		command = 'systemctl show ' + process + ' --no-page'
+		output = subprocess.check_output(command.split(),universal_newlines=True)
+		if 'UnitFileState=enabled' in output: self.listSystemd.CheckItem(index)
+		self.listSystemd.SetItem(index, 1, process)
+		self.listSystemd.SetItem(index, 2, self.aStatusList[('ActiveState=active' in output)*1])
+		self.listSystemd.SetItem(index, 3, self.bStatusList[('SubState=running' in output)*1])
+						
+	def onStart(self,e):
+		index = self.listSystemd.GetFirstSelected()
+		if index == -1: return
+		subprocess.call((self.platform.admin + ' systemctl start ' + self.process[index]).split())
+		self.set_listSystemd()
+
+	def onStop(self,e):
+		index = self.listSystemd.GetFirstSelected()
+		if index == -1: return
+		subprocess.call((self.platform.admin + ' systemctl stop ' + self.process[index]).split())
+		self.set_listSystemd()
+
+	def onRestart(self,e):
+		index = self.listSystemd.GetFirstSelected()
+		if index == -1: return
+		subprocess.call((self.platform.admin + ' systemctl restart ' + self.process[index]).split())
+		self.set_listSystemd()
+		
+	def OnCheckItem(self, index, flag):
+		if not self.started: return
+		if flag:
+			subprocess.call((self.platform.admin + ' systemctl enable ' + self.process[index]).split())
+		else:
+			subprocess.call((self.platform.admin + ' systemctl disable ' + self.process[index]).split())
+		#self.set_listSystemd()
 
 ################################################################################
 
