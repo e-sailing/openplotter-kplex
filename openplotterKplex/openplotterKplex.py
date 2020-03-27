@@ -29,12 +29,6 @@ else:
 	import version
 	from add_kplex import addkplex
 
-class CheckListCtrl2(wx.ListCtrl, CheckListCtrlMixin, ListCtrlAutoWidthMixin):
-	def __init__(self, parent, height):
-		wx.ListCtrl.__init__(self, parent, -1, style=wx.LC_REPORT | wx.SUNKEN_BORDER, size=(650, height))
-		CheckListCtrlMixin.__init__(self)
-		ListCtrlAutoWidthMixin.__init__(self)
-
 class CheckListCtrl(wx.ListCtrl, CheckListCtrlMixin, ListCtrlAutoWidthMixin):
 	def __init__(self, parent, height):
 		wx.ListCtrl.__init__(self, parent, -1, style=wx.LC_REPORT | wx.SUNKEN_BORDER, size=(650, height))
@@ -211,7 +205,7 @@ class KplexFrame(wx.Frame):
 			self.ShowMessage(_('Editor mousepad not found'))
 		
 	def pageKplex(self):
-		self.list_kplex = CheckListCtrl2(self.p_kplex, 152)
+		self.list_kplex = CheckListCtrl(self.p_kplex, 152)
 		self.list_kplex.InsertColumn(0, _('Name'), width=130)
 		self.list_kplex.InsertColumn(1, _('Type'), width=45)
 		self.list_kplex.InsertColumn(2, _('io'), width=45)
