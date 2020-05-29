@@ -83,21 +83,35 @@ class KplexFrame(wx.Frame):
 		self.p_kplex = wx.Panel(self.notebook)
 		self.systemd = wx.Panel(self.notebook)
 		self.output = wx.Panel(self.notebook)
-		self.notebook.AddPage(self.p_kplex, _('Devices'))	
-		self.notebook.AddPage(self.systemd, _('Process status'))	
+		self.notebook.AddPage(self.p_kplex, _('Devices'))
+		self.notebook.AddPage(self.systemd, _('Processes'))
 		self.notebook.AddPage(self.output, '')
 		self.il = wx.ImageList(24, 24)
 		img0 = self.il.Add(wx.Bitmap(self.currentdir+"/data/kplex.png", wx.BITMAP_TYPE_PNG))
-		img1 = self.il.Add(wx.Bitmap(self.currentdir+"/data/output.png", wx.BITMAP_TYPE_PNG))
+		img1 = self.il.Add(wx.Bitmap(self.currentdir+"/data/process.png", wx.BITMAP_TYPE_PNG))
+		img2 = self.il.Add(wx.Bitmap(self.currentdir+"/data/output.png", wx.BITMAP_TYPE_PNG))
 		self.notebook.AssignImageList(self.il)
 		self.notebook.SetPageImage(0, img0)
-		self.notebook.SetPageImage(1, img0)
-		self.notebook.SetPageImage(2, img1)
-		
+		self.notebook.SetPageImage(1, img1)
+		self.notebook.SetPageImage(2, img2)
+
 		vbox = wx.BoxSizer(wx.VERTICAL)
 		vbox.Add(self.toolbar1, 0, wx.EXPAND)
 		vbox.Add(self.notebook, 1, wx.EXPAND)
 		self.SetSizer(vbox)
+
+		self.appsDict = []
+		
+		app = {
+		'name': 'Kplex',
+		'included': True,
+		'show': '',
+		'service': ['openplotter-kplex'],
+		'edit': False,
+		'install': '',
+		'uninstall': '',
+		}
+		self.appsDict.append(app)
 		
 		self.pageKplex()
 		self.pageSystemd()
@@ -203,6 +217,8 @@ class KplexFrame(wx.Frame):
 			subprocess.Popen(['mousepad', self.home + '/.kplex.conf'])
 		except:
 			self.ShowMessage(_('Editor mousepad not found'))
+		
+################################################################################
 		
 	def pageKplex(self):
 		self.list_kplex = CheckListCtrl(self.p_kplex, 152)
@@ -449,6 +465,13 @@ class KplexFrame(wx.Frame):
 		if selected == -1:
 			self.ShowStatusBarRED(_('Select an item.'))
 			return
+		
+		command = 'systemctl show openplotter-kplex --no-page'
+		output = subprocess.check_output(command.split(),universal_newlines=True)
+		if 'SubState=running' in output: 
+			self.ShowStatusBarRED(_('Please stop the process before you use Diagnostic.'))
+			return		
+		
 		num = len(self.kplex)
 		for i in range(num):
 			if self.list_kplex.IsSelected(i):
@@ -505,28 +528,32 @@ class KplexFrame(wx.Frame):
 		wx.CallAfter(self.logger.WriteText, string)		
 
 ################################################################################
+		
 
 	def pageSystemd(self):
 		self.started = False
-		self.process = ['openplotter-kplex']
 		self.aStatusList = [_('inactive'),_('active')]
 		self.bStatusList = [_('dead'),_('running')] 
 
 		self.listSystemd = CheckListCtrl(self.systemd, 152)
 		self.listSystemd.InsertColumn(0, _('Autostart'), width=90)
-		self.listSystemd.InsertColumn(1, _('Process'), width=150)
-		self.listSystemd.InsertColumn(2, _('Status'), width=150)
-		self.listSystemd.InsertColumn(3, '  ', width=150)
-		
+		self.listSystemd.InsertColumn(1, _('App'), width=90)
+		self.listSystemd.InsertColumn(2, _('Process'), width=140)
+		self.listSystemd.InsertColumn(3, _('Status'), width=120)
+		self.listSystemd.InsertColumn(4, '  ', width=100)
+		self.listSystemd.Bind(wx.EVT_LIST_ITEM_SELECTED, self.onListSystemdSelected)
+		self.listSystemd.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.onListSystemdDeselected)
+		self.listSystemd.SetTextColour(wx.BLACK)
+
 		self.listSystemd.OnCheckItem = self.OnCheckItem
 
 		self.toolbar3 = wx.ToolBar(self.systemd, style=wx.TB_TEXT | wx.TB_VERTICAL)
-		self.start = self.toolbar3.AddTool(301, _('Start'), wx.Bitmap(self.currentdir+"/data/start.png"))
-		self.Bind(wx.EVT_TOOL, self.onStart, self.start)
-		self.stop = self.toolbar3.AddTool(302, _('Stop'), wx.Bitmap(self.currentdir+"/data/stop.png"))
-		self.Bind(wx.EVT_TOOL, self.onStop, self.stop)
-		self.restart = self.toolbar3.AddTool(303, _('Restart'), wx.Bitmap(self.currentdir+"/data/restart.png"))
-		self.Bind(wx.EVT_TOOL, self.onRestart, self.restart)	
+		start = self.toolbar3.AddTool(301, _('Start'), wx.Bitmap(self.currentdir+"/data/start.png"))
+		self.Bind(wx.EVT_TOOL, self.onStart, start)
+		stop = self.toolbar3.AddTool(302, _('Stop'), wx.Bitmap(self.currentdir+"/data/stop.png"))
+		self.Bind(wx.EVT_TOOL, self.onStop, stop)
+		restart = self.toolbar3.AddTool(303, _('Restart'), wx.Bitmap(self.currentdir+"/data/restart.png"))
+		self.Bind(wx.EVT_TOOL, self.onRestart, restart)	
 
 		sizer = wx.BoxSizer(wx.HORIZONTAL)
 		sizer.Add(self.listSystemd, 1, wx.EXPAND, 0)
@@ -537,47 +564,90 @@ class KplexFrame(wx.Frame):
 		self.set_listSystemd()
 		self.started = True
 
-	def set_listSystemd(self):
-		self.listSystemd.DeleteAllItems()
-		index = 1
-		for i in self.process:
-			if i:
-				index = self.listSystemd.InsertItem(sys.maxsize, '')
-				self.statusUpdate(i,index)
+	def onListSystemdSelected(self, e):
+		i = e.GetIndex()
+		valid = e and i >= 0
+		if not valid: return
+		self.toolbar3.EnableTool(301,True)
+		self.toolbar3.EnableTool(302,True)
+		self.toolbar3.EnableTool(303,True)
 
-	def statusUpdate(self, process, index): 
-		command = 'systemctl show ' + process + ' --no-page'
-		output = subprocess.check_output(command.split(),universal_newlines=True)
-		if 'UnitFileState=enabled' in output: self.listSystemd.CheckItem(index)
-		self.listSystemd.SetItem(index, 1, process)
-		self.listSystemd.SetItem(index, 2, self.aStatusList[('ActiveState=active' in output)*1])
-		self.listSystemd.SetItem(index, 3, self.bStatusList[('SubState=running' in output)*1])
+	def onListSystemdDeselected(self, event=0):
+		self.toolbar3.EnableTool(301,False)
+		self.toolbar3.EnableTool(302,False)
+		self.toolbar3.EnableTool(303,False)
+
+	def OnRefreshButton(self, event=0):
+		self.listSystemd.DeleteAllItems()
+		self.started = False
+		self.set_listSystemd()
+		self.started = True
+
+	def set_listSystemd(self):
+		apps = list(reversed(self.appsDict))
+		for i in apps:
+			if i['service']:
+				for ii in i['service']:
+					index = self.listSystemd.InsertItem(sys.maxsize, '')
+					self.listSystemd.SetItem(index, 1, i['name'])
+					self.listSystemd.SetItem(index, 2, ii)
+					command = 'systemctl show '+ii+' --no-page'
+					output = subprocess.check_output(command.split(),universal_newlines=True)
+				if 'UnitFileState=enabled' in output: self.listSystemd.CheckItem(index)
+		self.statusUpdate()
+
+	def statusUpdate(self):
+		listCount = range(self.listSystemd.GetItemCount())
+		for i in listCount:
+			service = self.listSystemd.GetItemText(i, 2)
+			command = 'systemctl show '+service+' --no-page'
+			output = subprocess.check_output(command.split(),universal_newlines=True)
+			if 'ActiveState=active' in output: self.listSystemd.SetItem(i, 3, _('active'))
+			else: self.listSystemd.SetItem(i, 3, _('inactive'))
+			if 'SubState=running' in output: 
+				self.listSystemd.SetItem(i, 4, _('running'))
+				self.listSystemd.SetItemBackgroundColour(i,(0,255,0))
+			else: 
+				self.listSystemd.SetItem(i, 4, _('dead'))
+				self.listSystemd.SetItemBackgroundColour(i,(-1,-1,-1))
+
 						
 	def onStart(self,e):
 		index = self.listSystemd.GetFirstSelected()
 		if index == -1: return
-		subprocess.call((self.platform.admin + ' systemctl start ' + self.process[index]).split())
-		self.set_listSystemd()
+		self.ShowStatusBarYELLOW(_('Starting process...'))
+		subprocess.call((self.platform.admin + ' systemctl start ' + self.listSystemd.GetItemText(index, 2)).split())
+		time.sleep(1)
+		self.OnRefreshButton()
+		self.ShowStatusBarGREEN(_('Done'))
 
 	def onStop(self,e):
 		index = self.listSystemd.GetFirstSelected()
 		if index == -1: return
-		subprocess.call((self.platform.admin + ' systemctl stop ' + self.process[index]).split())
-		self.set_listSystemd()
+		self.ShowStatusBarYELLOW(_('Stopping process...'))
+		subprocess.call((self.platform.admin + ' systemctl stop ' + self.listSystemd.GetItemText(index, 2)).split())
+		time.sleep(1)
+		self.OnRefreshButton()
+		self.ShowStatusBarGREEN(_('Done'))
 
 	def onRestart(self,e):
 		index = self.listSystemd.GetFirstSelected()
 		if index == -1: return
-		subprocess.call((self.platform.admin + ' systemctl restart ' + self.process[index]).split())
-		self.set_listSystemd()
+		self.ShowStatusBarYELLOW(_('Restarting process...'))
+		subprocess.call((self.platform.admin + ' systemctl restart ' + self.listSystemd.GetItemText(index, 2)).split())
+		time.sleep(1)
+		self.OnRefreshButton()
+		self.ShowStatusBarGREEN(_('Done'))
 		
 	def OnCheckItem(self, index, flag):
 		if not self.started: return
+		self.ShowStatusBarYELLOW(_('Enabling/Disabling process...'))
 		if flag:
-			subprocess.call((self.platform.admin + ' systemctl enable ' + self.process[index]).split())
+			subprocess.call((self.platform.admin + ' systemctl enable ' + self.listSystemd.GetItemText(index, 2)).split())
 		else:
-			subprocess.call((self.platform.admin + ' systemctl disable ' + self.process[index]).split())
-		#self.set_listSystemd()
+			subprocess.call((self.platform.admin + ' systemctl disable ' + self.listSystemd.GetItemText(index, 2)).split())
+		self.OnRefreshButton()
+		self.ShowStatusBarGREEN(_('Done'))
 
 ################################################################################
 
