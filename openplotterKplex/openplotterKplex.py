@@ -70,8 +70,6 @@ class KplexFrame(wx.Frame):
 		opSerial = self.toolbar1.AddTool(104, _('OP Serial'), wx.Bitmap(self.currentdir+"/data/usb.png"))
 		self.Bind(wx.EVT_TOOL, self.OnOpSerial, opSerial)
 		#self.toolbar1.AddSeparator()
-		restart = self.toolbar1.AddTool(105, _('restart'), wx.Bitmap(self.currentdir+"/data/kplex.png"))
-		self.Bind(wx.EVT_TOOL, self.OnRestart, restart)
 		advanced = self.toolbar1.AddTool(106, _('manual settings'), wx.Bitmap(self.currentdir+"/data/kplex.png"))
 		self.Bind(wx.EVT_TOOL, self.OnAdvanced, advanced)
 		self.toolbar1.AddSeparator()
@@ -162,38 +160,6 @@ class KplexFrame(wx.Frame):
 		subprocess.call(['pkill', '-f', 'openplotter-settings'])
 		subprocess.Popen('openplotter-settings')
 
-	def OnRestart(self, event=0):
-		self.notebook.ChangeSelection(2)
-		self.logger.Clear()
-		err = False
-		#self.ShowStatusBarRED(_('Closing Kplex'))
-		print(_('Closing Kplex'))
-		self.notebook.Update()
-		if self.diagnostic:
-			subprocess.call(['pkill', '-f', 'diagnostic-NMEA.py'])
-			subprocess.call(['pkill', '-f', 'kplex'])
-			time.sleep(1)
-			self.diagnostic = False
-		command = self.platform.admin+' python3 ' + self.currentdir + '/service.py restart'
-		popen = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, shell=True)
-		time.sleep(5)
-		command = self.platform.admin+' python3 ' + self.currentdir + '/service.py status'
-		popen = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, shell=True)
-		for line in popen.stdout:
-			if 'openplotter kplex' in line:
-				print(line[:-1])
-				err = True
-				self.logger.ShowPosition(self.logger.GetLastPosition())
-			if 'active (running)' in line:
-				print(_('Kplex running'))
-		
-		if err:
-			print(_("Error: Can't restart Kplex"))
-		else:
-			print(_('Kplex restarted'))
-
-		self.read_kplex_conf()
-		
 	def OnSkConnections(self,e):
 		if self.platform.skPort:
 			url = self.platform.http+'localhost:'+self.platform.skPort+'/admin/#/serverConfiguration/connections/-'
@@ -255,7 +221,8 @@ class KplexFrame(wx.Frame):
 		self.onDeselected()
 
 	def stop_kplex(self):
-		subprocess.Popen([self.platform.admin, 'python3', self.currentdir+'/service.py', 'stop'])
+		subprocess.Popen([self.platform.admin, 'pkill', '-f', 'diagnostic-NMEA.py'])
+		subprocess.Popen([self.platform.admin, 'pkill', '-f', 'debugkplex'])
 
 	def OnEditButton(self, e):
 		idx = self.selected
@@ -616,6 +583,8 @@ class KplexFrame(wx.Frame):
 		index = self.listSystemd.GetFirstSelected()
 		if index == -1: return
 		self.ShowStatusBarYELLOW(_('Starting process...'))
+		subprocess.Popen([self.platform.admin, 'pkill', '-f', 'diagnostic-NMEA.py'])
+		subprocess.Popen([self.platform.admin, 'pkill', '-f', 'debugkplex'])
 		subprocess.call((self.platform.admin + ' systemctl start ' + self.listSystemd.GetItemText(index, 2)).split())
 		time.sleep(1)
 		self.OnRefreshButton()
@@ -634,6 +603,8 @@ class KplexFrame(wx.Frame):
 		index = self.listSystemd.GetFirstSelected()
 		if index == -1: return
 		self.ShowStatusBarYELLOW(_('Restarting process...'))
+		subprocess.Popen([self.platform.admin, 'pkill', '-f', 'diagnostic-NMEA.py'])
+		subprocess.Popen([self.platform.admin, 'pkill', '-f', 'debugkplex'])
 		subprocess.call((self.platform.admin + ' systemctl restart ' + self.listSystemd.GetItemText(index, 2)).split())
 		time.sleep(1)
 		self.OnRefreshButton()
